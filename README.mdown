@@ -1,0 +1,53 @@
+Garrison Agent - AWS Inspector
+--
+
+This is a part of the [Garrison](https://github.com/forward3d/garrison) security project. This agent provides mirroring of the AWS Inspector alerts and other basic checks.
+
+### Checks Provided
+
+| Function Name | Description  |
+| ------------- | ------------- |
+| `check_findings` | Retrieves all findings from Inspector. |
+
+### Installation & Example
+
+Docker Hub - https://hub.docker.com/r/forward3d/garrison-agent-aws-inspector/
+
+    docker pull forward3d/garrison-agent-aws-inspector
+    docker run --rm -e "GARRISON_URL=https://garrison.internal.acme.com" forward3d/garrison-agent-aws-inspector check_findings
+    docker run --rm -e "GARRISON_URL=https://garrison.internal.acme.com" -e "GARRISON_AWS_REGIONS=eu-west-1,us-west-2" forward3d/garrison-agent-aws-inspector check_findings
+
+### Agent Specific Configuration
+
+These are additional specific configuration options for this agent. [Global agent configurations](https://github.com/forward3d/garrison#global-configuration-options) still apply.
+
+| Environmental Variable  | Default | Expects |
+| ------------- | ------------- | ------------- |
+| `GARRISON_AWS_REGIONS` | `all` [[1]](#f1) | Comma Separated Strings eg. `eu-west-1,us-west-2` |
+| `GARRISON_AWS_INSPECTOR_RULES_PACKAGE_NAMES` | `all` [[2]](#f2) | Comma Separated Strings eg. `Common Vulnerabilities and Exposures,Security Best Practices` |
+| `GARRISON_AWS_INSPECTOR_THRESHOLD` | `undefined,informational,low,medium,high`| Comma Separated Strings eg. `medium,high` |
+
+1. <span id="f1"></span> Standard AWS Regions as returned by the AWS SDK at runtime.
+2. <span id="f2"></span> All Rules Packages included by the AWS SDK at runtime for the region. If you want to be specific, use the names as described in the [AWS Documentation](https://docs.aws.amazon.com/inspector/latest/userguide/inspector_rules-arns.html).
+
+#### AWS Authentication
+
+As this requires access to the AWS API you will need this IAM policy as a minimum for it to operate correctly.
+
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": [
+                  "guardduty:GetFindings",
+                  "guardduty:ListDetectors",
+                  "guardduty:ListFindings",
+                  "guardduty:GetDetector"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+            }
+        ]
+    }
+
+We recommend using EC2/ECS Task roles so that you don't need to send credentials into the container, however if you can't use those or want to send in specific Access Keys and Secret keys, please see the [AWS Documentation](https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/setup-config.html#aws-ruby-sdk-credentials-environment) as to how you do that.

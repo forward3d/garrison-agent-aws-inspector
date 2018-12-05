@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require_relative '../environment'
+
+module Garrison
+  module Checks
+    check = CheckFindings.new(@options)
+    check.perform
+  end
+end

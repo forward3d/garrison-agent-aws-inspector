@@ -64,9 +64,6 @@ module Garrison
               ]
             )
 
-          rescue NoMethodError => e
-            binding.pry
-            raise e
           end
         end
       end

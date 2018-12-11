@@ -7,7 +7,8 @@ module Garrison
       end
 
       def all_regions
-        Aws.partition('aws').regions.map(&:name)
+        excluded = %w(ap-southeast-1 ca-central-1 eu-west-2 eu-west-3 sa-east-1)
+        Aws.partition('aws').regions.map(&:name).reject { |n| excluded.include?(n) }
       end
 
       def list_rules_packages(inspector, filter)
@@ -51,6 +52,8 @@ module Garrison
               },
               next_token: next_token,
             })
+
+            raise StopIteration if results.assessment_run_arns.count == 0
 
             Logging.debug "AWS SDK - Realizing Assessment Runs (count=#{results.assessment_run_arns.count})"
             assessment_runs = inspector.describe_assessment_runs(assessment_run_arns: results.assessment_run_arns)

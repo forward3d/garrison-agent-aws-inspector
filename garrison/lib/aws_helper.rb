@@ -7,8 +7,7 @@ module Garrison
       end
 
       def all_regions
-        excluded = %w(ap-southeast-1 ca-central-1 eu-west-2 eu-west-3 sa-east-1)
-        Aws.partition('aws').regions.map(&:name).reject { |n| excluded.include?(n) }
+        Aws::Partitions.partition('aws').service('Inspector').regions
       end
 
       def list_rules_packages(inspector, filter)

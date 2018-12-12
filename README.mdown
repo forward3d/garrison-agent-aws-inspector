@@ -27,7 +27,7 @@ These are additional specific configuration options for this agent. [Global agen
 | `GARRISON_AWS_INSPECTOR_RULES_PACKAGE_NAMES` | `all` [[2]](#f2) | Comma Separated Strings eg. `Common Vulnerabilities and Exposures,Security Best Practices` |
 | `GARRISON_AWS_INSPECTOR_THRESHOLD` | `undefined,informational,low,medium,high`| Comma Separated Strings eg. `medium,high` |
 
-1. <span id="f1"></span> Standard AWS Regions as returned by the AWS SDK at runtime minus regions where Inspector isn't available.
+1. <span id="f1"></span> AWS Regions as returned by the AWS SDK at runtime for regions where Inspector service is available.
 2. <span id="f2"></span> All Rules Packages included by the AWS SDK at runtime for the region. If you want to be specific, use the names as described in the [AWS Documentation](https://docs.aws.amazon.com/inspector/latest/userguide/inspector_rules-arns.html).
 
 #### AWS Authentication

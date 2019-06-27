@@ -1,24 +1,24 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    aws-eventstream (1.0.1)
-    aws-partitions (1.121.0)
-    aws-sdk-core (3.42.0)
-      aws-eventstream (~> 1.0)
+    aws-eventstream (1.0.3)
+    aws-partitions (1.180.0)
+    aws-sdk-core (3.56.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
       aws-partitions (~> 1.0)
-      aws-sigv4 (~> 1.0)
+      aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-    aws-sdk-inspector (1.12.0)
-      aws-sdk-core (~> 3, >= 3.39.0)
-      aws-sigv4 (~> 1.0)
-    aws-sigv4 (1.0.3)
+    aws-sdk-inspector (1.20.0)
+      aws-sdk-core (~> 3, >= 3.56.0)
+      aws-sigv4 (~> 1.1)
+    aws-sigv4 (1.1.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
     coderay (1.1.2)
     garrison-api (1.0.7)
       httparty (~> 0.16.2)
     httparty (0.16.2)
       multi_xml (>= 0.5.2)
     jmespath (1.4.0)
-    memoist (0.16.0)
     method_source (0.9.0)
     multi_xml (0.6.0)
     pry (0.11.3)
@@ -31,7 +31,6 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk-inspector (~> 1)
   garrison-api (~> 1)
-  memoist (~> 0.16.0)
   pry
 
 BUNDLED WITH

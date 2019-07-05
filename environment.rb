@@ -23,5 +23,6 @@ module Garrison
     @options[:regions] = ENV['GARRISON_AWS_REGIONS'] ? ENV['GARRISON_AWS_REGIONS'].split(',') : nil
     @options[:rules_packages] = ENV['GARRISON_AWS_INSPECTOR_RULES_PACKAGE_NAMES'] ? ENV['GARRISON_AWS_INSPECTOR_RULES_PACKAGE_NAMES'].split(',') : nil
     @options[:severity_threshold] = ENV['GARRISON_AWS_INSPECTOR_THRESHOLD'] ? ENV['GARRISON_AWS_INSPECTOR_THRESHOLD'].split(',') : nil
+    @options[:excluded_cis_rules] = ENV['GARRISON_AWS_INSPECTOR_EXCLUDED_CIS'] ? ENV['GARRISON_AWS_INSPECTOR_EXCLUDED_CIS'].split(',') : nil
   end
 end

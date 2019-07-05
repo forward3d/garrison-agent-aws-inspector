@@ -9,6 +9,7 @@ module Garrison
         self.options[:regions] ||= 'all'
         self.options[:rules_packages] ||= 'all'
         self.options[:severity_threshold] ||= %w(undefined informational low medium high)
+        self.options[:excluded_cis_rules] ||= []
       end
 
       def key_values
@@ -35,6 +36,16 @@ module Garrison
 
           findings = AwsHelper.list_findings(inspector, latest_runs, rules_packages, options[:severity_threshold])
           findings.each do |finding|
+
+            # are we dealing with CIS findings?
+            if finding.attributes.find { |a| a.key == "CIS_BENCHMARK_PROFILE" }
+              rule = finding.attributes.find { |a| a.key == "BENCHMARK_RULE_ID" }
+              matches = /^([.0-9]*?)\s/.match(rule.value)
+              if matches && options[:excluded_cis_rules].include?(matches[1])
+                Logging.info "Skipping excluded finding (rule_id=#{matches[1]} arn=#{finding.arn})"
+                next
+              end
+            end
 
             alert(
               name: rules_packages.find { |rp| rp.arn == finding.service_attributes.rules_package_arn }.name,

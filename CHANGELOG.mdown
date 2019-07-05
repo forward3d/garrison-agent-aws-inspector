@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2019-06-05
+### Added
+- CIS rule exclusion support via `GARRISON_AWS_INSPECTOR_EXCLUDED_CIS` env variable
+
 ## [1.0.1] - 2019-06-02
 ### Changed
 - Support for `garrison-api` rubygem v2

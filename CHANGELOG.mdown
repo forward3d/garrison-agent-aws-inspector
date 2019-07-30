@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2019-07-30
+### Added
+- CIS rule exclusions can now be benchmark OS specific
+
 ## [1.0.2] - 2019-07-05
 ### Added
 - CIS rule exclusion support via `GARRISON_AWS_INSPECTOR_EXCLUDED_CIS` env variable

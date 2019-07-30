@@ -39,9 +39,14 @@ module Garrison
 
             # are we dealing with CIS findings?
             if finding.attributes.find { |a| a.key == "CIS_BENCHMARK_PROFILE" }
+              benchmark = finding.attributes.find { |a| a.key == "BENCHMARK_ID" }
               rule = finding.attributes.find { |a| a.key == "BENCHMARK_RULE_ID" }
+
+              # lookup which excluded rules might apply to this benchmark
+              excluded_rules = lookup_exclusions(benchmark.value)
+
               matches = /^([.0-9]*?)\s/.match(rule.value)
-              if matches && options[:excluded_cis_rules].include?(matches[1])
+              if matches && excluded_rules.include?(matches[1])
                 Logging.info "Skipping excluded finding (rule_id=#{matches[1]} arn=#{finding.arn})"
                 next
               end
@@ -80,6 +85,22 @@ module Garrison
       end
 
       private
+
+      def lookup_exclusions(benchmark_id)
+        if benchmark_id.include?("CIS Amazon Linux Benchmark")
+          @options[:excluded_cis_rules][:amazon_linux]
+        elsif benchmark_id.include?("CIS Amazon Linux 2 Benchmark")
+          @options[:excluded_cis_rules][:amazon_linux_2]
+        elsif benchmark_id.include?("CentOS Linux 6 Benchmark")
+          @options[:excluded_cis_rules][:centos_6]
+        elsif benchmark_id.include?("CentOS Linux 7 Benchmark")
+          @options[:excluded_cis_rules][:centos_7]
+        elsif benchmark_id.include?("Ubuntu Linux 14.04 LTS Benchmark")
+          @options[:excluded_cis_rules][:ubuntu_trusty]
+        elsif benchmark_id.include?("Ubuntu Linux 15.04 LTS Benchmark")
+          @options[:excluded_cis_rules][:ubuntu_xenial]
+        end
+      end
 
       def aws_severity_to_garrison_severity(severity)
         case severity.downcase
